@@ -6,7 +6,10 @@ using Simulation.Roads;
 using Simulation.TrafficLights;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Visualization.ViewModels
 {
@@ -28,13 +31,38 @@ namespace Visualization.ViewModels
         public IReadOnlyList<TrafficLightViewModel> TrafficLights => _TrafficLightsVMs;
 
         private readonly TrafficLightsMediator _TrafficLightsChannel;
+        private readonly Intersection _Intersection;
+        private readonly IIntersectionPath[] _Paths;
 
+        protected readonly ObservableCollection<bool> _PathJustPassed;
+        public INotifyCollectionChanged PathJustPassed => _PathJustPassed;
 
         const int crosswalksCount = 8;
         const int roadsCount = 4;
         const int cameraPollingInterval = 100;
         const int intersectionUpdateInterval = 1000;
 
+
+        private bool _HasTrafficCollision;
+        public bool HasTrafficCollision
+        {
+            get
+            {
+                lock (SyncRoot)
+                    return _HasTrafficCollision;
+            }
+            protected set
+            {
+                bool hasChanged = false;
+                lock (SyncRoot)
+                {
+                    hasChanged = _HasTrafficCollision != value;
+                    _HasTrafficCollision = value;
+                }
+                if (hasChanged)
+                    InvokePropertyChanged();
+            }
+        }
 
         public CrossroadsViewModel(IContext context) : base(context)
         {
@@ -54,7 +82,7 @@ namespace Visualization.ViewModels
             _CrosswalkVMs = new RoadViewModel[crosswalksCount];
             for (int i = 0; i < crosswalksCount; i++)
             {
-                _Crosswalks[i] = new Road(8000, 12000);
+                _Crosswalks[i] = new Road(5000, 10000);
                 _Simulation.AddEntity(_Crosswalks[i]);
                 _CrosswalkVMs[i] = new RoadViewModel(context, _Crosswalks[i]);
 
@@ -99,7 +127,7 @@ namespace Visualization.ViewModels
             for (int i = 0; i < roadsCount; i++)
                 entrances[crosswalksCount + i] = new IntersectionEntrance(_Roads[i], _TrafficLights[crosswalksCount + i]);
 
-            Intersection intersection = new Intersection(intersectionUpdateInterval, new IIntersectionPath[]
+            _Paths = new IIntersectionPath[]
             {
                 //Переход 0
                 new IntersectionPath(
@@ -161,14 +189,38 @@ namespace Visualization.ViewModels
                     entrances[11],
                     new IIntersectionEntrance[] { entrances[5], entrances[6], entrances[3], entrances[4], entrances[1], entrances[2], entrances[8], entrances[10] }
                 )
-            });
+            };
+            _Intersection = new Intersection(intersectionUpdateInterval, _Paths);
 
-            _Simulation.AddEntity(intersection);
+            _PathJustPassed = new ObservableCollection<bool>(Enumerable.Repeat(false, _Paths.Length));
+
+            _Simulation.AddEntity(_Intersection);
+
+			_Intersection.OnIntersectionCollision += Intersection_OnIntersectionCollision;
+			_Intersection.PathPassed += Intersection_PathPassed;
 
             _Simulation.StartSimulation();
         }
 
-        protected IEnumerable<TrafficLightsState> CreateStates()
+		private async void Intersection_PathPassed(Intersection intersection, IIntersectionPath path)
+		{
+            int index = Array.IndexOf(_Paths, path);
+            if (index == -1)
+                return;
+            _PathJustPassed[index] = true;
+            await Task.Delay(intersectionUpdateInterval/2);
+            if (!HasTrafficCollision)
+                _PathJustPassed[index] = false;
+		}
+
+		private void Intersection_OnIntersectionCollision(Intersection intersection, IIntersectionPath path)
+		{
+            //Не ожидаем завершение, потому что завершение совершается изнутри симуляции
+			_Simulation.StopSimulation();
+            HasTrafficCollision = true;
+		}
+
+		protected IEnumerable<TrafficLightsState> CreateStates()
         {
             //Только пешеходные переходы (светофоры 0-7) открыты.
             TrafficLightsState state = new TrafficLightsState(
@@ -225,7 +277,8 @@ namespace Visualization.ViewModels
 
 		public void Dispose()
 		{
-			_Simulation.StopSimulation().Wait();
+            if (_Simulation.IsSimulationRunning)
+			    _Simulation.StopSimulation().Wait();
 		}
 	}
 }

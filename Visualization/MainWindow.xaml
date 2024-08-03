@@ -5,11 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Visualization"
         xmlns:views="clr-namespace:Visualization.Views"
-        xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:viewmodels="clr-namespace:Visualization.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:CrossroadsViewModel}"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:viewmodels="clr-namespace:Visualization.ViewModels" 
+        xmlns:convert="clr-namespace:Visualization.Converters"
+        d:DataContext="{d:DesignInstance Type=viewmodels:CrossroadsViewModel}"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="800" ResizeMode="NoResize" Closing="Window_Closing">
     <Window.Resources>
         <sys:Double x:Key="FontSize">20</sys:Double>
+        <convert:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
     </Window.Resources>
     <Grid Background="LightGray">
         <Grid.ColumnDefinitions>
@@ -137,8 +141,8 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <views:PedestrianQueue Grid.Row="1" Height="35" Width="35" VerticalAlignment="Top" FontSize="{StaticResource FontSize}" DataContext="{Binding Crosswalks[0]}" PedestriansCount="{Binding QueueSize}"/>
-            <views:PedestrianQueue Grid.Column="1" Height="35" Width="35" HorizontalAlignment="Left" FontSize="{StaticResource FontSize}" VerticalAlignment="Center"  DataContext="{Binding Crosswalks[1]}" PedestriansCount="{Binding QueueSize}"/>
+            <views:PedestrianQueue PedestrianBrush="Purple" Grid.Row="1" Height="35" Width="35" VerticalAlignment="Top" FontSize="{StaticResource FontSize}" DataContext="{Binding Crosswalks[0]}" PedestriansCount="{Binding QueueSize}"/>
+            <views:PedestrianQueue PedestrianBrush="Orange" Grid.Column="1" Height="35" Width="35" HorizontalAlignment="Left" FontSize="{StaticResource FontSize}" VerticalAlignment="Center"  DataContext="{Binding Crosswalks[1]}" PedestriansCount="{Binding QueueSize}"/>
         </Grid>
         <Grid Grid.Row="2" Grid.Column="5">
             <Grid.ColumnDefinitions>
@@ -149,8 +153,8 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <views:PedestrianQueue Height="35" Width="35" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="{StaticResource FontSize}" DataContext="{Binding Crosswalks[2]}" PedestriansCount="{Binding QueueSize}"/>
-            <views:PedestrianQueue Grid.Row="1" Grid.Column="1" Height="35" Width="35" HorizontalAlignment="Center" FontSize="{StaticResource FontSize}" VerticalAlignment="Top" DataContext="{Binding Crosswalks[3]}" PedestriansCount="{Binding QueueSize}" />
+            <views:PedestrianQueue PedestrianBrush="Purple" Height="35" Width="35" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="{StaticResource FontSize}" DataContext="{Binding Crosswalks[2]}" PedestriansCount="{Binding QueueSize}"/>
+            <views:PedestrianQueue PedestrianBrush="Orange" Grid.Row="1" Grid.Column="1" Height="35" Width="35" HorizontalAlignment="Center" FontSize="{StaticResource FontSize}" VerticalAlignment="Top" DataContext="{Binding Crosswalks[3]}" PedestriansCount="{Binding QueueSize}" />
         </Grid>
         <Grid Grid.Row="5" Grid.Column="5">
             <Grid.ColumnDefinitions>
@@ -161,8 +165,8 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <views:PedestrianQueue Grid.Column="1" Height="35" Width="35" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="{StaticResource FontSize}" DataContext="{Binding Crosswalks[4]}" PedestriansCount="{Binding QueueSize}"/>
-            <views:PedestrianQueue Grid.Row="1" Height="35" Width="35" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="{StaticResource FontSize}" DataContext="{Binding Crosswalks[5]}" PedestriansCount="{Binding QueueSize}"/>
+            <views:PedestrianQueue PedestrianBrush="Purple" Grid.Column="1" Height="35" Width="35" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="{StaticResource FontSize}" DataContext="{Binding Crosswalks[4]}" PedestriansCount="{Binding QueueSize}"/>
+            <views:PedestrianQueue PedestrianBrush="Orange" Grid.Row="1" Height="35" Width="35" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="{StaticResource FontSize}" DataContext="{Binding Crosswalks[5]}" PedestriansCount="{Binding QueueSize}"/>
         </Grid>
         <Grid Grid.Row="5" Grid.Column="2">
             <Grid.ColumnDefinitions>
@@ -173,14 +177,14 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <views:PedestrianQueue Grid.Row="1" Grid.Column="1" Height="35" Width="35" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="{StaticResource FontSize}" DataContext="{Binding Crosswalks[6]}" PedestriansCount="{Binding QueueSize}"/>
-            <views:PedestrianQueue Height="35" Width="35" VerticalAlignment="Bottom" FontSize="{StaticResource FontSize}" DataContext="{Binding Crosswalks[7]}" PedestriansCount="{Binding QueueSize}"/>
+            <views:PedestrianQueue PedestrianBrush="Purple" Grid.Row="1" Grid.Column="1" Height="35" Width="35" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="{StaticResource FontSize}" DataContext="{Binding Crosswalks[6]}" PedestriansCount="{Binding QueueSize}"/>
+            <views:PedestrianQueue PedestrianBrush="Orange" Height="35" Width="35" VerticalAlignment="Bottom" FontSize="{StaticResource FontSize}" DataContext="{Binding Crosswalks[7]}" PedestriansCount="{Binding QueueSize}"/>
         </Grid>
         <!-- Машины -->
-        <views:CarQueue Grid.Row="4" Grid.Column="1" Height="50" Width="90" FontSize="{StaticResource FontSize}" DataContext="{Binding Roads[0]}" CarsCount="{Binding QueueSize}"/>
-        <views:CarQueue Grid.Row="1" Grid.Column="3" Height="90" Width="50" FontSize="{StaticResource FontSize}" DataContext="{Binding Roads[1]}" CarsCount="{Binding QueueSize}"/>
-        <views:CarQueue Grid.Row="3" Grid.Column="6" Height="50" Width="90" FontSize="{StaticResource FontSize}" DataContext="{Binding Roads[2]}" CarsCount="{Binding QueueSize}"/>
-        <views:CarQueue Grid.Row="6" Grid.Column="4" Height="90" Width="50" FontSize="{StaticResource FontSize}" DataContext="{Binding Roads[3]}" CarsCount="{Binding QueueSize}"/>
+        <views:CarQueue CarBrush="Blue" Grid.Row="4" Grid.Column="1" Height="50" Width="90" FontSize="{StaticResource FontSize}" DataContext="{Binding Roads[0]}" CarsCount="{Binding QueueSize}"/>
+        <views:CarQueue CarBrush="Blue" Grid.Row="1" Grid.Column="3" Height="90" Width="50" FontSize="{StaticResource FontSize}" DataContext="{Binding Roads[1]}" CarsCount="{Binding QueueSize}"/>
+        <views:CarQueue CarBrush="Blue" Grid.Row="3" Grid.Column="6" Height="50" Width="90" FontSize="{StaticResource FontSize}" DataContext="{Binding Roads[2]}" CarsCount="{Binding QueueSize}"/>
+        <views:CarQueue CarBrush="Blue" Grid.Row="6" Grid.Column="4" Height="90" Width="50" FontSize="{StaticResource FontSize}" DataContext="{Binding Roads[3]}" CarsCount="{Binding QueueSize}"/>
         <!-- Светофоры -->
         <views:TrafficLight Grid.Row="5" Grid.Column="1" Height="40" Width="80" DataContext="{Binding TrafficLights[0]}"/>
         <views:TrafficLight Grid.Row="1" Grid.Column="5" Height="40" Width="80" HorizontalAlignment="Right" DataContext="{Binding TrafficLights[1]}"/>
@@ -194,5 +198,33 @@
         <views:TrafficLight Grid.Row="7" Grid.Column="3" Height="40" Width="80" DataContext="{Binding TrafficLights[9]}"/>
         <views:TrafficLight Grid.Row="3" Grid.Column="0" Height="40" Width="80" DataContext="{Binding TrafficLights[10]}"/>
         <views:TrafficLight Grid.Row="0" Grid.Column="4" Height="40" Width="80" DataContext="{Binding TrafficLights[11]}"/>
+        <!--Пути-->
+        <Rectangle Grid.Column="2" Grid.Row="3" Grid.RowSpan="2" Fill="Purple" Width="30" HorizontalAlignment="Left" Visibility="{Binding PathJustPassed[0], Converter={StaticResource BoolToVisibility}}"/>
+        <Rectangle Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="2" Fill="Orange" Height="30" VerticalAlignment="Bottom" Visibility="{Binding PathJustPassed[1], Converter={StaticResource BoolToVisibility}}"/>
+        <Rectangle Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="2" Fill="Purple" Height="30" VerticalAlignment="Top" Visibility="{Binding PathJustPassed[2], Converter={StaticResource BoolToVisibility}}"/>
+        <Rectangle Grid.Column="5" Grid.Row="3" Grid.RowSpan="2" Fill="Orange" Width="30" HorizontalAlignment="Left" Visibility="{Binding PathJustPassed[3], Converter={StaticResource BoolToVisibility}}"/>
+        <Rectangle Grid.Column="5" Grid.Row="3" Grid.RowSpan="2" Fill="Purple" Width="30" HorizontalAlignment="Right" Visibility="{Binding PathJustPassed[4], Converter={StaticResource BoolToVisibility}}"/>
+        <Rectangle Grid.Column="3" Grid.Row="5" Grid.ColumnSpan="2" Fill="Orange" Height="30" VerticalAlignment="Top" Visibility="{Binding PathJustPassed[5], Converter={StaticResource BoolToVisibility}}"/>
+        <Rectangle Grid.Column="3" Grid.Row="5" Grid.ColumnSpan="2" Fill="Purple" Height="30" VerticalAlignment="Bottom" Visibility="{Binding PathJustPassed[6], Converter={StaticResource BoolToVisibility}}"/>
+        <Rectangle Grid.Column="2" Grid.Row="3" Grid.RowSpan="2" Fill="Orange" Width="30" HorizontalAlignment="Right" Visibility="{Binding PathJustPassed[7], Converter={StaticResource BoolToVisibility}}"/>
+        <Rectangle Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="5" Fill="Blue" Height="30" VerticalAlignment="Center" Visibility="{Binding PathJustPassed[8], Converter={StaticResource BoolToVisibility}}"/>
+        <Rectangle Grid.Column="3" Grid.Row="2" Grid.RowSpan="5" Fill="Blue" Width="30" HorizontalAlignment="Center" Visibility="{Binding PathJustPassed[9], Converter={StaticResource BoolToVisibility}}"/>
+        <Rectangle Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="5" Fill="Blue" Height="30" VerticalAlignment="Center" Visibility="{Binding PathJustPassed[10], Converter={StaticResource BoolToVisibility}}"/>
+        <Rectangle Grid.Column="4" Grid.Row="1" Grid.RowSpan="5" Fill="Blue" Width="30" HorizontalAlignment="Center" Visibility="{Binding PathJustPassed[11], Converter={StaticResource BoolToVisibility}}"/>
+        <!--Авария-->
+        <TextBlock Visibility="{Binding HasTrafficCollision, Converter={StaticResource BoolToVisibility}}"
+                   Foreground="Red" 
+                   FontSize="40" 
+                   Grid.Row="3" 
+                   Grid.RowSpan="2" 
+                   Grid.ColumnSpan="8" 
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center" 
+                   TextAlignment="Center" 
+                   TextWrapping="Wrap">
+            Произошла авария!
+            <LineBreak />
+            Перезапустите приложения для создания новой симуляции.
+        </TextBlock>
     </Grid>
 </Window>

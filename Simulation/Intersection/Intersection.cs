@@ -10,6 +10,13 @@ namespace Simulation.Intersection
 	public delegate void OnIntersectionCollision(Intersection intersection, IIntersectionPath path);
 
 	/// <summary>
+	/// Делегат событий <see cref="Intersection.PathPassed"/>.
+	/// </summary>
+	/// <param name="intersection">Перекрёсток</param>
+	/// <param name="path">Путь перекрёстка, который был пройден.</param>
+	public delegate void OnIntersectionPathPassed(Intersection intersection, IIntersectionPath path);
+
+	/// <summary>
 	/// Реализация перекрёстка.
 	/// </summary>
 	public class Intersection : SimulationEntityBase
@@ -21,6 +28,12 @@ namespace Simulation.Intersection
 		/// Событие столкновения на перекрёстке.
 		/// </summary>
 		public event OnIntersectionCollision? OnIntersectionCollision;
+
+
+		/// <summary>
+		/// Вызывается, когда что-то успешно проходит по этому пути.
+		/// </summary>
+		public event OnIntersectionPathPassed? PathPassed;
 
 		/// <summary>
 		/// Создать перекрёсток с заданными путями и временем прохождения.
@@ -52,6 +65,7 @@ namespace Simulation.Intersection
 				}
 
 				path.Pass();
+				PathPassed?.Invoke(this, path);
 			}
 			TryAwakeSimulation();
 		}

@@ -23,6 +23,7 @@
         /// </summary>
         public int ID { get; }
 
+        /// <summary>
         event TrafficLightPassabilityChanged PassabilityChanged;
     }
 }
