@@ -246,29 +246,29 @@ namespace Visualization.ViewModels
             //Дорога и параллельные переходы на противоположной стороне
             //(8 - дорога, 1 и 2 - переходы)
             state = new TrafficLightsState(
-                new int[] { 8, 1, 2 },
-                new int[] { 0, 5, 6, 3, 4, 7, 9, 10, 11 }
+                new int[] { 1, 2, 8 },
+                new int[] { 0, 3, 4, 5, 6, 7, 9, 10, 11 }
             );
             yield return state;
          
             //(9 - дорога, 3 и 4 - переходы)
             state = new TrafficLightsState(
-                new int[] { 9, 3, 4 },
+                new int[] { 3, 4, 9 },
                 new int[] { 0, 1, 2, 5, 6, 7, 8, 10, 11 }
             );
             yield return state;
 
             //(10 - дорога, 5 и 6 - переходы)
             state = new TrafficLightsState(
-                new int[] { 10, 5, 6 },
+                new int[] { 5, 6, 10 },
                 new int[] { 0, 1, 2, 3, 4, 7, 8, 9, 11 }
             );
             yield return state;
 
-            //(11 - дорога, 7 и 8 - переходы)
+            //(11 - дорога, 7 и 0 - переходы)
             state = new TrafficLightsState(
-                new int[] { 11, 7, 8 },
-                new int[] { 0, 1, 2, 3, 4, 5, 6, 9, 11 }
+                new int[] { 0, 7, 11 },
+                new int[] { 1, 2, 3, 4, 5, 6, 8, 9, 10 }
             );
             yield return state;
 
