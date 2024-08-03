@@ -58,17 +58,20 @@ namespace Algorithm
 			return (queuesNotEmpty, totalQueuesSize);
 		}
 
-		/// <summary>
-		/// Применить это состояние ко всем светофорам путём рассылки сообщений.
-		/// </summary>
-		/// <param name="controller">Контроллер для отправки сообщений.</param>
-		public void ApplyState(ITrafficLightController controller)
+		public List<int> DisableTrafficLights(ITrafficLightController controller)
+		{
+			foreach (int id in _DisableTrafficLights)
+				controller.DispatchMessage(id, new TrafficLightSetStateMessage(controller.ID, false));
+
+			return _DisableTrafficLights.ToList();
+		}
+
+		public List<int> EnableTrafficLights(ITrafficLightController controller)
 		{
 			foreach (int id in _EnableTrafficLights)
 				controller.DispatchMessage(id, new TrafficLightSetStateMessage(controller.ID, true));
 
-			foreach (int id in _DisableTrafficLights)
-				controller.DispatchMessage(id, new TrafficLightSetStateMessage(controller.ID, false));
+			return _EnableTrafficLights.ToList();
 		}
 	}
 }

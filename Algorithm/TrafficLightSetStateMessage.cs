@@ -5,7 +5,7 @@ namespace Algorithm
 	/// <summary>
 	/// Сообщение о необходимости изменить состояние светофора.
 	/// </summary>
-	public class TrafficLightSetStateMessage : TrafficLightMessageBase
+	internal class TrafficLightSetStateMessage : TrafficLightMessageBase
 	{
 		/// <summary>
 		/// Должен ли светофор пропускать сущности в новом состоянии.
