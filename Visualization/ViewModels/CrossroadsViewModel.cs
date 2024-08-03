@@ -1,6 +1,7 @@
 ﻿using Algorithm;
 using Simulation.Cameras;
-﻿using Simulation.Core;
+using Simulation.Core;
+using Simulation.Intersection;
 using Simulation.Roads;
 using Simulation.TrafficLights;
 using System;
@@ -60,7 +61,7 @@ namespace Visualization.ViewModels
                 _Cameras[i] = new TrafficLightCamera(_Crosswalks[i], cameraPollingInterval);
                 _Simulation.AddEntity(_Cameras[i]);
             }
-
+            
             //Генерируем дороги и ассоциируем камеры 8-11 с ними.
             _Roads = new Road[roadsCount];
             _RoadsVMs = new RoadViewModel[roadsCount];
@@ -73,7 +74,7 @@ namespace Visualization.ViewModels
                 _Cameras[crosswalksCount + i] = new TrafficLightCamera(_Roads[i], cameraPollingInterval);
                 _Simulation.AddEntity(_Cameras[crosswalksCount + i]);
             }
-
+            
             //Создаём контролирующий светофор
             _TrafficLights[0] = new TrafficLight(0, _Cameras[0], _TrafficLightsChannel, (controller) => new TrafficLightMasterBrain(controller, CreateStates(), intersectionUpdateInterval));
             _TrafficLightsVMs[0] = new TrafficLightViewModel(context, _Cameras[0], _TrafficLights[0]);
@@ -88,6 +89,81 @@ namespace Visualization.ViewModels
                 _TrafficLightsVMs[i] = new TrafficLightViewModel(context, _Cameras[i], _TrafficLights[i]);
                 _TrafficLightsChannel.Attach(_TrafficLights[i]);
             }
+
+            //Настраиваем симуляцию прохода через перекрёсток
+            
+            IntersectionEntrance[] entrances = new IntersectionEntrance[crosswalksCount + roadsCount];
+            for (int i = 0; i < crosswalksCount; i++)
+                entrances[i] = new IntersectionEntrance(_Crosswalks[i], _TrafficLights[i]);
+
+            for (int i = 0; i < roadsCount; i++)
+                entrances[crosswalksCount + i] = new IntersectionEntrance(_Roads[i], _TrafficLights[crosswalksCount + i]);
+
+            Intersection intersection = new Intersection(intersectionUpdateInterval, new IIntersectionPath[]
+            {
+                //Переход 0
+                new IntersectionPath(
+                    entrances[0],
+                    new IIntersectionEntrance[] { entrances[8], entrances[9], entrances[10] }
+                ),
+                //Переход 1
+                new IntersectionPath(
+                    entrances[1],
+                    new IIntersectionEntrance[] { entrances[9], entrances[10], entrances[11] }
+                ),
+                //Переход 2 (обратный к 1)
+                new IntersectionPath(
+                    entrances[2],
+                    new IIntersectionEntrance[] { entrances[9], entrances[10], entrances[11] }
+                ),
+                //Переход 3
+                new IntersectionPath(
+                    entrances[3],
+                    new IIntersectionEntrance[] { entrances[8], entrances[10], entrances[11] }
+                ),
+                //Переход 4 (обратный к 3)
+                new IntersectionPath(
+                    entrances[4],
+                    new IIntersectionEntrance[] { entrances[8], entrances[10], entrances[11] }
+                ),
+                //Переход 5
+                new IntersectionPath(
+                    entrances[5],
+                    new IIntersectionEntrance[] { entrances[8], entrances[9], entrances[11] }
+                ),
+                //Переход 6 (обратный к 5)
+                new IntersectionPath(
+                    entrances[6],
+                    new IIntersectionEntrance[] { entrances[8], entrances[9], entrances[11] }
+                ),
+                //Переход 7 (обратный к 0)
+                new IntersectionPath(
+                    entrances[7],
+                    new IIntersectionEntrance[] { entrances[8], entrances[9], entrances[10] }
+                ),
+                //Дорога 8
+                new IntersectionPath(
+                    entrances[8],
+                    new IIntersectionEntrance[] { entrances[0], entrances[7], entrances[3], entrances[4], entrances[5], entrances[6], entrances[9], entrances[11] }
+                ),
+                //Дорога 9
+                new IntersectionPath(
+                    entrances[9],
+                    new IIntersectionEntrance[] { entrances[0], entrances[7], entrances[5], entrances[6], entrances[1], entrances[2], entrances[8], entrances[10] }
+                ),
+                //Дорога 10
+                new IntersectionPath(
+                    entrances[10],
+                    new IIntersectionEntrance[] { entrances[0], entrances[7], entrances[3], entrances[4], entrances[1], entrances[2], entrances[9], entrances[11] }
+                ),
+                //Дорога 11
+                new IntersectionPath(
+                    entrances[11],
+                    new IIntersectionEntrance[] { entrances[5], entrances[6], entrances[3], entrances[4], entrances[1], entrances[2], entrances[8], entrances[10] }
+                )
+            });
+
+            _Simulation.AddEntity(intersection);
 
             _Simulation.StartSimulation();
         }
