@@ -1,0 +1,185 @@
+﻿<Window x:Class="Visualization.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Visualization"
+        xmlns:views="clr-namespace:Visualization.Views"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:viewmodels="clr-namespace:Visualization.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:CrossroadsViewModel}"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="800" Width="800" ResizeMode="NoResize" Closing="Window_Closing">
+    <Window.Resources>
+        <sys:Double x:Key="FontSize">20</sys:Double>
+    </Window.Resources>
+    <Grid Background="LightGray">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <!-- Static BG -->
+        <Border Grid.RowSpan="3" Grid.ColumnSpan="3" BorderBrush="Black" BorderThickness="0, 0, 10, 10" />
+        <Border Grid.RowSpan="3" Grid.ColumnSpan="3" Grid.Column="5" BorderBrush="Black" BorderThickness="10, 0, 0, 10" />
+        <Border Grid.RowSpan="3" Grid.ColumnSpan="3" Grid.Row="5" BorderBrush="Black" BorderThickness="0, 10, 10, 0" />
+        <Border Grid.RowSpan="3" Grid.ColumnSpan="3" Grid.Row="5" Grid.Column="5" BorderBrush="Black" BorderThickness="10, 10, 0, 0" />
+        <Rectangle Grid.Row="3" Grid.RowSpan="2" Grid.ColumnSpan="8" Fill="Gray" />
+        <Rectangle Grid.Column="3" Grid.ColumnSpan="2" Grid.RowSpan="8" Fill="Gray" />
+        <Grid Grid.Row="2" Grid.Column="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Rectangle Fill="White" Grid.Column="1" />
+            <Rectangle Fill="White" Grid.Column="3" />
+        </Grid>
+        <Grid Grid.Row="2" Grid.Column="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Rectangle Fill="White" Grid.Column="1" />
+            <Rectangle Fill="White" Grid.Column="3" />
+        </Grid>
+        <Grid Grid.Row="5" Grid.Column="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Rectangle Fill="White" Grid.Column="1" />
+            <Rectangle Fill="White" Grid.Column="3" />
+        </Grid>
+        <Grid Grid.Row="5" Grid.Column="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Rectangle Fill="White" Grid.Column="1" />
+            <Rectangle Fill="White" Grid.Column="3" />
+        </Grid>
+        <Grid Grid.Row="3" Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Rectangle Fill="White" Grid.Row="1" />
+            <Rectangle Fill="White" Grid.Row="3" />
+        </Grid>
+        <Grid Grid.Row="4" Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Rectangle Fill="White" Grid.Row="1" />
+            <Rectangle Fill="White" Grid.Row="3" />
+        </Grid>
+        <Grid Grid.Row="3" Grid.Column="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Rectangle Fill="White" Grid.Row="1" />
+            <Rectangle Fill="White" Grid.Row="3" />
+        </Grid>
+        <Grid Grid.Row="4" Grid.Column="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Rectangle Fill="White" Grid.Row="1" />
+            <Rectangle Fill="White" Grid.Row="3" />
+        </Grid>
+        <!-- Pedestrians -->
+        <Grid Grid.Row="2" Grid.Column="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <views:PedestrianQueue Grid.Row="1" Height="35" Width="35" VerticalAlignment="Top" FontSize="{StaticResource FontSize}" DataContext="{Binding Crosswalks[0]}" PedestriansCount="{Binding QueueSize}"/>
+            <views:PedestrianQueue Grid.Column="1" Height="35" Width="35" HorizontalAlignment="Left" FontSize="{StaticResource FontSize}" VerticalAlignment="Center"  DataContext="{Binding Crosswalks[1]}" PedestriansCount="{Binding QueueSize}"/>
+        </Grid>
+        <Grid Grid.Row="2" Grid.Column="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <views:PedestrianQueue Height="35" Width="35" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="{StaticResource FontSize}" DataContext="{Binding Crosswalks[2]}" PedestriansCount="{Binding QueueSize}"/>
+            <views:PedestrianQueue Grid.Row="1" Grid.Column="1" Height="35" Width="35" HorizontalAlignment="Center" FontSize="{StaticResource FontSize}" VerticalAlignment="Top" DataContext="{Binding Crosswalks[3]}" PedestriansCount="{Binding QueueSize}" />
+        </Grid>
+        <Grid Grid.Row="5" Grid.Column="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <views:PedestrianQueue Grid.Column="1" Height="35" Width="35" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="{StaticResource FontSize}" DataContext="{Binding Crosswalks[4]}" PedestriansCount="{Binding QueueSize}"/>
+            <views:PedestrianQueue Grid.Row="1" Height="35" Width="35" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="{StaticResource FontSize}" DataContext="{Binding Crosswalks[5]}" PedestriansCount="{Binding QueueSize}"/>
+        </Grid>
+        <Grid Grid.Row="5" Grid.Column="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <views:PedestrianQueue Grid.Row="1" Grid.Column="1" Height="35" Width="35" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="{StaticResource FontSize}" DataContext="{Binding Crosswalks[6]}" PedestriansCount="{Binding QueueSize}"/>
+            <views:PedestrianQueue Height="35" Width="35" VerticalAlignment="Bottom" FontSize="{StaticResource FontSize}" DataContext="{Binding Crosswalks[7]}" PedestriansCount="{Binding QueueSize}"/>
+        </Grid>
+        <!-- Cars -->
+        <views:CarQueue Panel.ZIndex="1" Grid.Row="4" Grid.Column="1" Height="50" Width="90" FontSize="{StaticResource FontSize}" DataContext="{Binding Roads[0]}" CarsCount="{Binding QueueSize}"/>
+        <views:CarQueue Panel.ZIndex="1" Grid.Row="1" Grid.Column="3" Height="90" Width="50" FontSize="{StaticResource FontSize}" DataContext="{Binding Roads[1]}" CarsCount="{Binding QueueSize}"/>
+        <views:CarQueue Panel.ZIndex="1" Grid.Row="3" Grid.Column="6" Height="50" Width="90" FontSize="{StaticResource FontSize}" DataContext="{Binding Roads[2]}" CarsCount="{Binding QueueSize}"/>
+        <views:CarQueue Panel.ZIndex="1" Grid.Row="6" Grid.Column="4" Height="90" Width="50" FontSize="{StaticResource FontSize}" DataContext="{Binding Roads[3]}" CarsCount="{Binding QueueSize}"/>
+    </Grid>
+</Window>

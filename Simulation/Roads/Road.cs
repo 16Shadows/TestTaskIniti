@@ -21,6 +21,8 @@ namespace Simulation.Roads
 			}
 		}
 
+		public event RoadQueueSizeChanged? QueueSizeChanged;
+
 		/// <summary>
 		/// Минимальное время ожидания следующей машины.
 		/// </summary>
@@ -55,6 +57,7 @@ namespace Simulation.Roads
 			lock (_QueueSizeSyncRoot)
 				_QueueSize++;
 
+			QueueSizeChanged?.Invoke(this);
 			//Не даём потоку уснуть.
 			TryAwakeSimulation();
 		}
@@ -63,6 +66,8 @@ namespace Simulation.Roads
 		{
 			lock (_QueueSizeSyncRoot)
 				_QueueSize--;
+
+			QueueSizeChanged?.Invoke(this);
 		}
 	}
 }

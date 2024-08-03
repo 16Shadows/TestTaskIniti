@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="Visualization.Views.CarQueue"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Visualization.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="150" d:DesignWidth="150">
+    <Grid Visibility="{Binding RelativeSource={RelativeSource AncestorType=local:CarQueue}, Path=ComputedVisibility}">
+        <Rectangle Fill="{Binding RelativeSource={RelativeSource AncestorType=local:CarQueue}, Path=CarBrush}" Panel.ZIndex="0"/>
+        <TextBlock Panel.ZIndex="1"
+                   Background="Transparent"
+                   Foreground="{Binding RelativeSource={RelativeSource AncestorType=local:CarQueue}, Path=TextBrush}"
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center" 
+                   Text="{Binding RelativeSource={RelativeSource AncestorType=local:CarQueue}, Path=CarsCount}"
+                   FontSize="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=FontSize}"/>
+    </Grid>
+</UserControl>
