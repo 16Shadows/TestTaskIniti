@@ -32,7 +32,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <!-- Static BG -->
+        <!-- Фон -->
         <Border Grid.RowSpan="3" Grid.ColumnSpan="3" BorderBrush="Black" BorderThickness="0, 0, 10, 10" />
         <Border Grid.RowSpan="3" Grid.ColumnSpan="3" Grid.Column="5" BorderBrush="Black" BorderThickness="10, 0, 0, 10" />
         <Border Grid.RowSpan="3" Grid.ColumnSpan="3" Grid.Row="5" BorderBrush="Black" BorderThickness="0, 10, 10, 0" />
@@ -127,7 +127,7 @@
             <Rectangle Fill="White" Grid.Row="1" />
             <Rectangle Fill="White" Grid.Row="3" />
         </Grid>
-        <!-- Pedestrians -->
+        <!-- Пешеходы -->
         <Grid Grid.Row="2" Grid.Column="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -176,10 +176,23 @@
             <views:PedestrianQueue Grid.Row="1" Grid.Column="1" Height="35" Width="35" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="{StaticResource FontSize}" DataContext="{Binding Crosswalks[6]}" PedestriansCount="{Binding QueueSize}"/>
             <views:PedestrianQueue Height="35" Width="35" VerticalAlignment="Bottom" FontSize="{StaticResource FontSize}" DataContext="{Binding Crosswalks[7]}" PedestriansCount="{Binding QueueSize}"/>
         </Grid>
-        <!-- Cars -->
-        <views:CarQueue Panel.ZIndex="1" Grid.Row="4" Grid.Column="1" Height="50" Width="90" FontSize="{StaticResource FontSize}" DataContext="{Binding Roads[0]}" CarsCount="{Binding QueueSize}"/>
-        <views:CarQueue Panel.ZIndex="1" Grid.Row="1" Grid.Column="3" Height="90" Width="50" FontSize="{StaticResource FontSize}" DataContext="{Binding Roads[1]}" CarsCount="{Binding QueueSize}"/>
-        <views:CarQueue Panel.ZIndex="1" Grid.Row="3" Grid.Column="6" Height="50" Width="90" FontSize="{StaticResource FontSize}" DataContext="{Binding Roads[2]}" CarsCount="{Binding QueueSize}"/>
-        <views:CarQueue Panel.ZIndex="1" Grid.Row="6" Grid.Column="4" Height="90" Width="50" FontSize="{StaticResource FontSize}" DataContext="{Binding Roads[3]}" CarsCount="{Binding QueueSize}"/>
+        <!-- Машины -->
+        <views:CarQueue Grid.Row="4" Grid.Column="1" Height="50" Width="90" FontSize="{StaticResource FontSize}" DataContext="{Binding Roads[0]}" CarsCount="{Binding QueueSize}"/>
+        <views:CarQueue Grid.Row="1" Grid.Column="3" Height="90" Width="50" FontSize="{StaticResource FontSize}" DataContext="{Binding Roads[1]}" CarsCount="{Binding QueueSize}"/>
+        <views:CarQueue Grid.Row="3" Grid.Column="6" Height="50" Width="90" FontSize="{StaticResource FontSize}" DataContext="{Binding Roads[2]}" CarsCount="{Binding QueueSize}"/>
+        <views:CarQueue Grid.Row="6" Grid.Column="4" Height="90" Width="50" FontSize="{StaticResource FontSize}" DataContext="{Binding Roads[3]}" CarsCount="{Binding QueueSize}"/>
+        <!-- Светофоры -->
+        <views:TrafficLight Grid.Row="5" Grid.Column="1" Height="40" Width="80" DataContext="{Binding TrafficLights[0]}"/>
+        <views:TrafficLight Grid.Row="1" Grid.Column="5" Height="40" Width="80" HorizontalAlignment="Right" DataContext="{Binding TrafficLights[1]}"/>
+        <views:TrafficLight Grid.Row="1" Grid.Column="2" Height="40" Width="80" HorizontalAlignment="Left" DataContext="{Binding TrafficLights[2]}"/>
+        <views:TrafficLight Grid.Row="5" Grid.Column="6" Height="40" Width="80" DataContext="{Binding TrafficLights[3]}"/>
+        <views:TrafficLight Grid.Row="2" Grid.Column="6" Height="40" Width="80" DataContext="{Binding TrafficLights[4]}"/>
+        <views:TrafficLight Grid.Row="6" Grid.Column="2" Height="40" Width="80" HorizontalAlignment="Left" DataContext="{Binding TrafficLights[5]}"/>
+        <views:TrafficLight Grid.Row="6" Grid.Column="5" Height="40" Width="80" HorizontalAlignment="Right" DataContext="{Binding TrafficLights[6]}"/>
+        <views:TrafficLight Grid.Row="2" Grid.Column="1" Height="40" Width="80" DataContext="{Binding TrafficLights[7]}"/>
+        <views:TrafficLight Grid.Row="4" Grid.Column="7" Height="40" Width="80" DataContext="{Binding TrafficLights[8]}"/>
+        <views:TrafficLight Grid.Row="7" Grid.Column="3" Height="40" Width="80" DataContext="{Binding TrafficLights[9]}"/>
+        <views:TrafficLight Grid.Row="3" Grid.Column="0" Height="40" Width="80" DataContext="{Binding TrafficLights[10]}"/>
+        <views:TrafficLight Grid.Row="0" Grid.Column="4" Height="40" Width="80" DataContext="{Binding TrafficLights[11]}"/>
     </Grid>
 </Window>

@@ -47,8 +47,11 @@ namespace Simulation.TrafficLights
                 {
                     _CanBePassed = value;
                 }
+                PassabilityChanged?.Invoke(this);
             }
         }
+
+        public event TrafficLightPassabilityChanged? PassabilityChanged;
 
 		public int ID { get; }
 
