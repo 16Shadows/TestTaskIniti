@@ -1,0 +1,24 @@
+﻿namespace Simulation.TrafficLights
+{
+    /// <summary>
+    /// Интерфейс светофора.
+    /// </summary>
+    public interface ITrafficLight
+    {
+        /// <summary>
+        /// Добавляет новое сообщение в очередь сообщений этого светофора.
+        /// </summary>
+        /// <param name="message">Сообщение, которое необходимо добавить.</param>
+        void EnqueueMessage(TrafficLightMessageBase message);
+
+        /// <summary>
+        /// Указывает, разрешает ли этот светофор движение по управляемой им дороге.
+        /// </summary>
+        bool CanBePassed { get; }
+
+        /// <summary>
+        /// ID этого светофора.
+        /// </summary>
+        public int ID { get; }
+    }
+}
