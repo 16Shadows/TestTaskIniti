@@ -102,9 +102,8 @@ namespace Simulation.TrafficLights
         /// Флаг, указывающий, изменился ли размер очереди с предыдущего SimulationStep.
         /// </summary>
         private bool _QueueSizeChanged = false;
-        
 
-        private void OnQueueSizeChanged(ITrafficLightCamera queue)
+		private void OnQueueSizeChanged(ITrafficLightCamera queue)
         {
             if (queue == _Camera)
             {
@@ -132,6 +131,18 @@ namespace Simulation.TrafficLights
             }
 
             return Timeout.Infinite;
+		}
+
+		protected override void SetUpSimulation()
+		{
+			base.SetUpSimulation();
+            _Brain.OnStart();
+		}
+
+		protected override void TearDownSimulation()
+		{
+			base.TearDownSimulation();
+            _Brain.OnStop();
 		}
 	}
 }

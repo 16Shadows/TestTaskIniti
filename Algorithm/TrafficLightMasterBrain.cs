@@ -7,6 +7,16 @@ namespace Algorithm
 	/// </summary>
 	public class TrafficLightMasterBrain : ITrafficLightBrain
 	{
+		private class UpdateTrafficLightsStateMessage : TrafficLightMessageBase
+		{
+			public UpdateTrafficLightsStateMessage(int senderID) : base(senderID)
+			{
+			}
+		}
+
+		private readonly UpdateTrafficLightsStateMessage _UpdateStateMessage;
+		private readonly int _UpdateStateInterval;
+
 		/// <summary>
 		/// Компаратор счетов состояний
 		/// </summary>
@@ -30,8 +40,9 @@ namespace Algorithm
 		/// </summary>
 		/// <param name="controller">Контроллер этого светофора.</param>
 		/// <param name="states">Набор конфигураций светофоров на перекрёстке.</param>
+		/// <param name="updateIntervalMs">Частота обновления состояния.</param>
 		/// <exception cref="TrafficLightMasterBrain">Бросается, если <paramref name="controller"/> или <paramref name="states"/> имеет значение <c>null</c>.</exception>
-		public TrafficLightMasterBrain(ITrafficLightController controller, IEnumerable<TrafficLightsState> states)
+		public TrafficLightMasterBrain(ITrafficLightController controller, IEnumerable<TrafficLightsState> states, int updateIntervalMs)
 		{
 			_States = (states ?? throw new ArgumentNullException(nameof(states))).ToArray();
 
@@ -39,6 +50,8 @@ namespace Algorithm
 				throw new ArgumentException("Master traffic light must have at least one state.", nameof(states));
 
 			_Controller = controller ?? throw new ArgumentNullException(nameof(controller));
+			_UpdateStateMessage = new UpdateTrafficLightsStateMessage(controller.ID);
+			_UpdateStateInterval = updateIntervalMs;
 		}
 
 		/// <summary>
@@ -57,6 +70,7 @@ namespace Algorithm
 				state.ApplyState(_Controller);
 				_ActiveState = state;
 			}
+			_Controller.DispatchMessage(_Controller.ID, _UpdateStateMessage, _UpdateStateInterval);
 		}
 
 		public void OnMessage(TrafficLightMessageBase message)
@@ -64,19 +78,30 @@ namespace Algorithm
 			if (message is TrafficLightQueueSizeChangedMessage sizeChanged)
 			{
 				_QueueSizes[sizeChanged.SenderID] = sizeChanged.NewSize;
-				UpdateState();
 			}
 			//Для однородности реализации изменение состояния этого светофора тоже производится сообщением, отправляемым самому себе.
 			else if (message is TrafficLightSetStateMessage setState && message.SenderID == _Controller.ID)
 			{
 				_Controller.CanBePassed = setState.CanBePassed;
 			}
+			//Обновляем состояние FSM
+			else if (message is UpdateTrafficLightsStateMessage updateState && message.SenderID == _Controller.ID)
+				UpdateState();
 		}
 
 		public void OnQueueSizeChanged(int newSize)
 		{
 			_QueueSizes[_Controller.ID] = newSize;
+		}
+
+		public void OnStart()
+		{
 			UpdateState();
+		}
+
+		public void OnStop()
+		{
+			_QueueSizes.Clear();
 		}
 	}
 }

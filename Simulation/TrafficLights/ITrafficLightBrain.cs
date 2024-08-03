@@ -16,5 +16,15 @@
 		/// </summary>
 		/// <param name="newSize">Новый размер очереди светофора.</param>
 		void OnQueueSizeChanged(int newSize);
+
+		/// <summary>
+		/// Вызывается, когда светофор приводится в работу.
+		/// </summary>
+		void OnStart();
+
+		/// <summary>
+		/// Вызывается, когда светофор выводится из работы.
+		/// </summary>
+		void OnStop();
 	}
 }

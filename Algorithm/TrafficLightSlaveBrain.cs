@@ -40,5 +40,15 @@ namespace Algorithm
 		{
 			_Controller.DispatchMessage(_MasterID, new TrafficLightQueueSizeChangedMessage(_Controller.ID, newSize));
 		}
+
+		public void OnStart()
+		{
+			//Ничего
+		}
+
+		public void OnStop()
+		{
+			//Ничего
+		}
 	}
 }
