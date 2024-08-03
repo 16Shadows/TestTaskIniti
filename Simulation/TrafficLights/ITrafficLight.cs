@@ -1,5 +1,7 @@
 ﻿namespace Simulation.TrafficLights
 {
+    public delegate void TrafficLightPassabilityChanged(ITrafficLight trafficLight);
+
     /// <summary>
     /// Интерфейс светофора.
     /// </summary>
@@ -20,5 +22,8 @@
         /// ID этого светофора.
         /// </summary>
         public int ID { get; }
+
+        /// <summary>
+        event TrafficLightPassabilityChanged PassabilityChanged;
     }
 }

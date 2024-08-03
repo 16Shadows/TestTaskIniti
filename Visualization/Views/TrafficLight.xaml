@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="Visualization.Views.TrafficLight"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Visualization.Views"
+             xmlns:vm="clr-namespace:Visualization.ViewModels"
+             xmlns:convert="clr-namespace:Visualization.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="200" d:DataContext="{d:DesignInstance Type=vm:TrafficLightViewModel}">
+    <UserControl.Resources>
+        <convert:TrafficLightColorConverter x:Key="TrafficLightColorConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Ellipse Fill="Black" Grid.Row="1" Name="CameraBG"/>
+        <TextBlock Foreground="Red" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=FontSize}" Text="{Binding QueueSize}"/>
+        <Rectangle Grid.Column="2" Grid.RowSpan="3" Fill="Gray"/>
+        <Ellipse Grid.Column="2" Grid.Row="1" Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}" Fill="{Binding TrafficLightColor, Converter={StaticResource TrafficLightColorConverter}}" />
+        <Border Grid.Column="2" Grid.RowSpan="3" BorderBrush="Black" BorderThickness="3" />
+    </Grid>
+</UserControl>

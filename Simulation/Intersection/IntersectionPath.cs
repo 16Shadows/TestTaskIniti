@@ -23,8 +23,6 @@
 			_CrossEntrances = crossEntrances?.ToArray() ?? new IIntersectionEntrance[0];
 		}
 
-		public event OnPathPassed? PathPassed;
-
 		public bool ExpectsPassage => _PathEntrance.ExpectsPassage;
 
 		public bool HasCollision => _PathEntrance.ExpectsPassage && _CrossEntrances.Any(x => x.ExpectsPassage);
@@ -32,7 +30,6 @@
 		public void Pass()
 		{
 			_PathEntrance.SimulatePassage();
-			PathPassed?.Invoke(this);
 		}
 	}
 }
