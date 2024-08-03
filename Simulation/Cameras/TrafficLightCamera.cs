@@ -51,10 +51,8 @@ namespace Simulation.Cameras
 			_LastQueueSize = 0;
 		}
 
-		protected override void SimulationStep()
+		protected override int SimulationStep()
 		{
-			//Поллим состояние очереди дороги каждые _PollingInterval мс.
-			Thread.Sleep(_PollingInterval);
 			lock (_QueueSizeLock)
 			{
 				int oldSize = _LastQueueSize;
@@ -62,8 +60,7 @@ namespace Simulation.Cameras
 				if (oldSize != _LastQueueSize)
 					QueueSizeChanged?.Invoke(this);
 			}
-			//Не даём потоку уснуть.
-			TryAwakeSimulation();
+			return _PollingInterval;
 		}
 	}
 }

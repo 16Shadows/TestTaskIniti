@@ -24,6 +24,8 @@
         public int ID { get; }
 
         /// <summary>
+		/// Событие об изменении состояния светофора для визуализации.
+		/// </summary>
         event TrafficLightPassabilityChanged PassabilityChanged;
     }
 }

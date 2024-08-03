@@ -111,16 +111,20 @@
                         return;
                 }
 
-                SimulationStep();
+                int sleepFor = SimulationStep();
 
-                _SimulationThreadCV?.WaitOne();
+                if (sleepFor > 0)
+                    _SimulationThreadCV?.WaitOne(sleepFor);
+                else if (sleepFor < 0)
+                    _SimulationThreadCV?.WaitOne();
             }
         }
 
         /// <summary>
-        /// Шаг симуляции, после которого поток симуляции отправляется в режим ожидания до пробуждения через <see cref="TryAwakeSimulation"/>.
+        /// Шаг симуляции, после которого поток симуляции отправляется в режим ожидания до пробуждения через <see cref="TryAwakeSimulation"/> или на указанное время.
         /// </summary>
-        protected abstract void SimulationStep();
+        /// <returns>Возвращает - время сна в мс. Если время сна < 0, то поток спит до пробуждения.</returns>
+        protected abstract int SimulationStep();
         
         /// <summary>
         /// Вызывается перед началом симуляции для инициализации состояния сущности.

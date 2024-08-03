@@ -117,7 +117,7 @@ namespace Simulation.TrafficLights
             }
         }
 
-		protected override void SimulationStep()
+		protected override int SimulationStep()
 		{
 			while (_Messages.TryDequeue(out var mes))
                 _Brain.OnMessage(mes);
@@ -130,6 +130,8 @@ namespace Simulation.TrafficLights
                     _QueueSizeChanged = false;
                 }
             }
+
+            return Timeout.Infinite;
 		}
 	}
 }

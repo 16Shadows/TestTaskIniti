@@ -50,16 +50,14 @@ namespace Simulation.Roads
 			_QueueSize = 0;
 		}
 
-		protected override void SimulationStep()
+		protected override int SimulationStep()
 		{
-			Thread.Sleep(Random.Shared.Next(_MinIntervalMs, _MaxIntervalMs));
-			
 			lock (_QueueSizeSyncRoot)
 				_QueueSize++;
 
 			QueueSizeChanged?.Invoke(this);
-			//Не даём потоку уснуть.
-			TryAwakeSimulation();
+
+			return Random.Shared.Next(_MinIntervalMs, _MaxIntervalMs);
 		}
 
 		public void PopQueue()

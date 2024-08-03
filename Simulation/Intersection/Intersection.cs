@@ -50,9 +50,8 @@ namespace Simulation.Intersection
 			_Paths = paths.ToArray() ?? throw new ArgumentNullException(nameof(paths));
 		}
 
-		protected override void SimulationStep()
+		protected override int SimulationStep()
 		{
-			Thread.Sleep(_PollIntervalMs);
 			foreach (var path in _Paths)
 			{
 				if (!path.ExpectsPassage)
@@ -67,7 +66,8 @@ namespace Simulation.Intersection
 				path.Pass();
 				PathPassed?.Invoke(this, path);
 			}
-			TryAwakeSimulation();
+
+			return _PollIntervalMs;
 		}
 	}
 }
