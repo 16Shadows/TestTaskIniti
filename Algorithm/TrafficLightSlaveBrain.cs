@@ -33,7 +33,10 @@ namespace Algorithm
 				return;
 
 			if (message is TrafficLightSetStateMessage setState)
+			{
 				_Controller.CanBePassed = setState.CanBePassed;
+				_Controller.DispatchMessage(_MasterID, new TrafficLightOnStateSetMessage(_Controller.ID));
+			}
 		}
 
 		public void OnQueueSizeChanged(int newSize)
