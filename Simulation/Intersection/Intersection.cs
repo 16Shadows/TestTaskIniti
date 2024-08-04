@@ -50,8 +50,16 @@ namespace Simulation.Intersection
 			_Paths = paths.ToArray() ?? throw new ArgumentNullException(nameof(paths));
 		}
 
+		private bool _FirstStep;
+
 		protected override int SimulationStep()
 		{
+			if (_FirstStep)
+			{
+				Thread.Sleep(_PollIntervalMs/2);
+				_FirstStep = false;
+			}
+
 			foreach (var path in _Paths)
 			{
 				if (!path.ExpectsPassage)
@@ -68,6 +76,12 @@ namespace Simulation.Intersection
 			}
 
 			return _PollIntervalMs;
+		}
+
+		protected override void SetUpSimulation()
+		{
+			base.SetUpSimulation();
+			_FirstStep = true;
 		}
 	}
 }
