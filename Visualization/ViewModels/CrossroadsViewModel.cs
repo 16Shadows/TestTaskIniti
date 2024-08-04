@@ -13,6 +13,30 @@ using System.Threading.Tasks;
 
 namespace Visualization.ViewModels
 {
+    class GreenLightBrain : ITrafficLightBrain
+    {
+        public GreenLightBrain(ITrafficLightController ctrl)
+        {
+            ctrl.CanBePassed = true;
+        }
+
+		public void OnMessage(TrafficLightMessageBase message)
+		{
+		}
+
+		public void OnQueueSizeChanged(int newSize)
+		{
+		}
+
+		public void OnStart()
+		{
+		}
+
+		public void OnStop()
+		{
+		}
+	}
+
     class CrossroadsViewModel : ViewModelBase, IDisposable
     {
         private readonly SimulationOrchestrator _Simulation;
@@ -32,7 +56,7 @@ namespace Visualization.ViewModels
 
         private readonly TrafficLightsMediator _TrafficLightsChannel;
         private readonly Intersection _Intersection;
-        private readonly IIntersectionPath[] _Paths;
+        private readonly IntersectionPath[] _Paths;
 
         protected readonly ObservableCollection<bool> _PathJustPassed;
         public INotifyCollectionChanged PathJustPassed => _PathJustPassed;
@@ -127,69 +151,36 @@ namespace Visualization.ViewModels
             for (int i = 0; i < roadsCount; i++)
                 entrances[crosswalksCount + i] = new IntersectionEntrance(_Roads[i], _TrafficLights[crosswalksCount + i]);
 
-            _Paths = new IIntersectionPath[]
-            {
-                //Переход 0
-                new IntersectionPath(
-                    entrances[0],
-                    new IIntersectionEntrance[] { entrances[8], entrances[9], entrances[10] }
-                ),
-                //Переход 1
-                new IntersectionPath(
-                    entrances[1],
-                    new IIntersectionEntrance[] { entrances[9], entrances[10], entrances[11] }
-                ),
-                //Переход 2 (обратный к 1)
-                new IntersectionPath(
-                    entrances[2],
-                    new IIntersectionEntrance[] { entrances[9], entrances[10], entrances[11] }
-                ),
-                //Переход 3
-                new IntersectionPath(
-                    entrances[3],
-                    new IIntersectionEntrance[] { entrances[8], entrances[10], entrances[11] }
-                ),
-                //Переход 4 (обратный к 3)
-                new IntersectionPath(
-                    entrances[4],
-                    new IIntersectionEntrance[] { entrances[8], entrances[10], entrances[11] }
-                ),
-                //Переход 5
-                new IntersectionPath(
-                    entrances[5],
-                    new IIntersectionEntrance[] { entrances[8], entrances[9], entrances[11] }
-                ),
-                //Переход 6 (обратный к 5)
-                new IntersectionPath(
-                    entrances[6],
-                    new IIntersectionEntrance[] { entrances[8], entrances[9], entrances[11] }
-                ),
-                //Переход 7 (обратный к 0)
-                new IntersectionPath(
-                    entrances[7],
-                    new IIntersectionEntrance[] { entrances[8], entrances[9], entrances[10] }
-                ),
-                //Дорога 8
-                new IntersectionPath(
-                    entrances[8],
-                    new IIntersectionEntrance[] { entrances[0], entrances[7], entrances[3], entrances[4], entrances[5], entrances[6], entrances[9], entrances[11] }
-                ),
-                //Дорога 9
-                new IntersectionPath(
-                    entrances[9],
-                    new IIntersectionEntrance[] { entrances[0], entrances[7], entrances[5], entrances[6], entrances[1], entrances[2], entrances[8], entrances[10] }
-                ),
-                //Дорога 10
-                new IntersectionPath(
-                    entrances[10],
-                    new IIntersectionEntrance[] { entrances[0], entrances[7], entrances[3], entrances[4], entrances[1], entrances[2], entrances[9], entrances[11] }
-                ),
-                //Дорога 11
-                new IntersectionPath(
-                    entrances[11],
-                    new IIntersectionEntrance[] { entrances[5], entrances[6], entrances[3], entrances[4], entrances[1], entrances[2], entrances[8], entrances[10] }
-                )
-            };
+            //Создадём пути через перекрёсток
+            _Paths = entrances.Select(x => new IntersectionPath(x)).ToArray();
+
+            //Настраиваем пересечения между путями
+            //Переход 0 пересекается с дорогами 8-10
+            _Paths[0].SetIntersectingPaths(_Paths[8],_Paths[9],_Paths[10]);
+            //Переход 1 пересекается с дорогами 9-11
+            _Paths[1].SetIntersectingPaths(_Paths[9],_Paths[10], _Paths[11]);
+            //Переход 2 пересекается с дорогами 9-11
+            _Paths[2].SetIntersectingPaths(_Paths[9],_Paths[10], _Paths[11]);
+            //Переход 3 пересекается с дорогами 8, 10, 11
+            _Paths[3].SetIntersectingPaths(_Paths[8],_Paths[10],_Paths[11]);
+            //Переход 4 пересекается с дорогами 8, 10, 11
+            _Paths[4].SetIntersectingPaths(_Paths[8],_Paths[10],_Paths[11]);
+            //Переход 5 пересекается с дорогами 8, 9, 11
+            _Paths[5].SetIntersectingPaths(_Paths[8],_Paths[9],_Paths[11]);
+            //Переход 6 пересекается с дорогами 8, 9, 11
+            _Paths[6].SetIntersectingPaths(_Paths[8],_Paths[9],_Paths[11]);
+            //Переход 7 пересекается с дорогами 8-10
+            _Paths[7].SetIntersectingPaths(_Paths[8],_Paths[9],_Paths[10]);
+            //Дорога 8 пересекается с переходами 0, 7, 3-6, дорогами 9, 11
+            _Paths[8].SetIntersectingPaths(_Paths[0],_Paths[7],_Paths[3],_Paths[4],_Paths[5],_Paths[6],_Paths[9],_Paths[11]);
+            //Дорога 9 пересекается с переходами 0, 7, 1, 2, 5, 6, дорогами 8, 10
+            _Paths[9].SetIntersectingPaths(_Paths[0],_Paths[7],_Paths[1],_Paths[2],_Paths[5],_Paths[6],_Paths[8],_Paths[10]);
+            //Дорога 10 пересекается с переходами 0, 7, 1-4, дорогами 9, 11
+            _Paths[10].SetIntersectingPaths(_Paths[0],_Paths[7],_Paths[1],_Paths[2],_Paths[3],_Paths[4],_Paths[9],_Paths[11]);
+            //Дорога 11 пересекается с переходами 1-6, дорогами 8, 10
+            _Paths[11].SetIntersectingPaths(_Paths[1],_Paths[2],_Paths[3],_Paths[4],_Paths[5],_Paths[6],_Paths[8],_Paths[10]);
+
+            //Создадём перекрёсток
             _Intersection = new Intersection(intersectionUpdateInterval, _Paths);
 
             _PathJustPassed = new ObservableCollection<bool>(Enumerable.Repeat(false, _Paths.Length));
