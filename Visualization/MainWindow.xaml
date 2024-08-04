@@ -207,10 +207,18 @@
         <Rectangle Grid.Column="3" Grid.Row="5" Grid.ColumnSpan="2" Fill="Orange" Height="30" VerticalAlignment="Top" Visibility="{Binding PathJustPassed[5], Converter={StaticResource BoolToVisibility}}"/>
         <Rectangle Grid.Column="3" Grid.Row="5" Grid.ColumnSpan="2" Fill="Purple" Height="30" VerticalAlignment="Bottom" Visibility="{Binding PathJustPassed[6], Converter={StaticResource BoolToVisibility}}"/>
         <Rectangle Grid.Column="2" Grid.Row="3" Grid.RowSpan="2" Fill="Orange" Width="30" HorizontalAlignment="Right" Visibility="{Binding PathJustPassed[7], Converter={StaticResource BoolToVisibility}}"/>
+
         <Rectangle Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="5" Fill="Blue" Height="30" VerticalAlignment="Center" Visibility="{Binding PathJustPassed[8], Converter={StaticResource BoolToVisibility}}"/>
+        <Rectangle Grid.Column="3" Grid.Row="4" Grid.RowSpan="3" Fill="Blue" Width="30" Height="250" VerticalAlignment="Bottom" HorizontalAlignment="Center" Visibility="{Binding PathJustPassed[8], Converter={StaticResource BoolToVisibility}}"/>
+        
         <Rectangle Grid.Column="3" Grid.Row="2" Grid.RowSpan="5" Fill="Blue" Width="30" HorizontalAlignment="Center" Visibility="{Binding PathJustPassed[9], Converter={StaticResource BoolToVisibility}}"/>
+        <Rectangle Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3" Fill="Blue" Height="30" Width="260" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="{Binding PathJustPassed[9], Converter={StaticResource BoolToVisibility}}" />
+
         <Rectangle Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="5" Fill="Blue" Height="30" VerticalAlignment="Center" Visibility="{Binding PathJustPassed[10], Converter={StaticResource BoolToVisibility}}"/>
+        <Rectangle Grid.Column="4" Grid.Row="1" Grid.RowSpan="3" Fill="Blue" Width="30" Height="250" VerticalAlignment="Top" HorizontalAlignment="Center" Visibility="{Binding PathJustPassed[10], Converter={StaticResource BoolToVisibility}}"/>
+
         <Rectangle Grid.Column="4" Grid.Row="1" Grid.RowSpan="5" Fill="Blue" Width="30" HorizontalAlignment="Center" Visibility="{Binding PathJustPassed[11], Converter={StaticResource BoolToVisibility}}"/>
+        <Rectangle Grid.Column="4" Grid.Row="4" Grid.ColumnSpan="3" Fill="Blue" Height="30" Width="260" HorizontalAlignment="Right" VerticalAlignment="Center" Visibility="{Binding PathJustPassed[11], Converter={StaticResource BoolToVisibility}}" />
         <!--Авария-->
         <TextBlock Visibility="{Binding HasTrafficCollision, Converter={StaticResource BoolToVisibility}}"
                    Foreground="Red" 
