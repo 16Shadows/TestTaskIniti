@@ -13,30 +13,6 @@ using System.Threading.Tasks;
 
 namespace Visualization.ViewModels
 {
-    class GreenLightBrain : ITrafficLightBrain
-    {
-        public GreenLightBrain(ITrafficLightController ctrl)
-        {
-            ctrl.CanBePassed = true;
-        }
-
-		public void OnMessage(TrafficLightMessageBase message)
-		{
-		}
-
-		public void OnQueueSizeChanged(int newSize)
-		{
-		}
-
-		public void OnStart()
-		{
-		}
-
-		public void OnStop()
-		{
-		}
-	}
-
     class CrossroadsViewModel : ViewModelBase, IDisposable
     {
         private readonly SimulationOrchestrator _Simulation;
@@ -144,15 +120,13 @@ namespace Visualization.ViewModels
 
             //Настраиваем симуляцию прохода через перекрёсток
             
-            IntersectionEntrance[] entrances = new IntersectionEntrance[crosswalksCount + roadsCount];
+            //Создаём пути через перекрёсток
+            _Paths = new IntersectionPath[crosswalksCount + roadsCount];
             for (int i = 0; i < crosswalksCount; i++)
-                entrances[i] = new IntersectionEntrance(_Crosswalks[i], _TrafficLights[i]);
+                _Paths[i] = new IntersectionPath(_Crosswalks[i], _TrafficLights[i]);
 
             for (int i = 0; i < roadsCount; i++)
-                entrances[crosswalksCount + i] = new IntersectionEntrance(_Roads[i], _TrafficLights[crosswalksCount + i]);
-
-            //Создадём пути через перекрёсток
-            _Paths = entrances.Select(x => new IntersectionPath(x)).ToArray();
+                _Paths[crosswalksCount + i] = new IntersectionPath(_Roads[i], _TrafficLights[crosswalksCount + i]);
 
             //Настраиваем пересечения между путями
             //Переход 0 пересекается с дорогами 8-10

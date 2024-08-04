@@ -1,4 +1,7 @@
-﻿namespace Simulation.Intersection
+﻿using Simulation.Roads;
+using Simulation.TrafficLights;
+
+namespace Simulation.Intersection
 {
 	/// <summary>
 	/// Реализация пути перекрёстка.
@@ -7,34 +10,50 @@
 	{
 		private static readonly IIntersectionPath[] _NoPaths = new IIntersectionPath[0];
 
-		private readonly IIntersectionEntrance _PathEntrance;
+		/// <summary>
+		/// Дорога, с которой машины входят на перекрёсток.
+		/// </summary>
+		private readonly IRoad _Road;
+
+		/// <summary>
+		/// Светофор, который контролирует этот вход.
+		/// </summary>
+		private readonly ITrafficLight? _TrafficLight;
+
+		/// <summary>
+		/// Пересекающиеся с этим пути.
+		/// </summary>
 		private IIntersectionPath[] _IntersectingPaths;
 
 		/// <summary>
 		/// Создать путь перекрёстка.
 		/// </summary>
-		/// <param name="entrance">Вход этого пути.</param>
-		/// <param name="crossEntrances">
-		/// Входы, пересекающиеся с этим перекрёстком.
-		/// Если у хотя бы одного из них <see cref="IIntersectionEntrance.ExpectsPassage"/> имеет значение <c>true</c>, то <see cref="HasCollision"/> будет иметь значение <c>true</c>.
-		/// </param>
+		/// <param name="road">Вход этого пути.</param>
+		/// <param name="trafficLight">Светофор, контролирующий этот путь (если какой-либо).</param>
 		/// <exception cref="ArgumentNullException">Бросается, если <paramref name="entrance"/> имеет значение <c>null</c>.</exception>
-		public IntersectionPath(IIntersectionEntrance entrance)
+		public IntersectionPath(IRoad road, ITrafficLight? trafficLight)
 		{
-			_PathEntrance = entrance ?? throw new ArgumentNullException(nameof(entrance));
+			_Road = road ?? throw new ArgumentNullException(nameof(road));
+			_TrafficLight = trafficLight;
 			_IntersectingPaths = _NoPaths;
 		}
 
 		public void SetIntersectingPaths(params IIntersectionPath[] crossPaths) => _IntersectingPaths = crossPaths ?? _NoPaths;
 		public void SetIntersectingPaths(IEnumerable<IIntersectionPath> crossPaths) => _IntersectingPaths = crossPaths?.ToArray() ?? _NoPaths;
 
-		public bool ExpectsPassage => _PathEntrance.ExpectsPassage;
+		public bool ExpectsPassage => _Road.QueueSize > 0 && _TrafficLight?.CanBePassed != false;
 
-		public bool HasCollision => _PathEntrance.ExpectsPassage && _IntersectingPaths.Any(x => x.ExpectsPassage);
+		public bool HasCollision => ExpectsPassage && _IntersectingPaths.Any(x => x.ExpectsPassage);
 
 		public void Pass()
 		{
-			_PathEntrance.SimulatePassage();
+			lock (_Road)
+			{
+				if (!ExpectsPassage)
+					throw new InvalidOperationException("Cannot pass a path that doesn't expect passage.");
+
+				_Road.PopQueue();
+			}
 		}
 	}
 }
